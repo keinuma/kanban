@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+import datetime
 
 from .models import Ticket
 
@@ -19,3 +20,15 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def get_status_display(self, obj):
         return obj.get_status_display()
+
+    def validate(self, data):
+        start = data['start']
+        end = data['end']
+        if start and start > end:
+            raise serializers.ValidationError('終了日は開始日以降に設定してください')
+        return data
+
+    def validate_start(self, value):
+        if value and value < datetime.date.today():
+            raise serializers.ValidationError('開始日には今日以降を入力してください')
+        return value

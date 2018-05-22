@@ -8,4 +8,4 @@ class TicketStatus(enum.IntEnum):
 
     @classmethod
     def get_choices(cls):
-        return tuple((x.values, x.name) for x in cls)
+        return tuple((x.value, x.name) for x in cls)
